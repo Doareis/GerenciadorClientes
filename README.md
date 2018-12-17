@@ -11,6 +11,6 @@
 - Bootstrap
 - AngularJS
 
-## Executar
+## Execução
 - $ mvn spring-boot:run
 - localhost:8080
