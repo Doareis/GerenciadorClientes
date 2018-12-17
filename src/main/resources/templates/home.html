@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" ng-app="clientes">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciador Clientes</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script th:src="@{/main.js}"></script>
+    <script th:src="@{/clientes-controller.js}"></script>
+</head>
+<body ng-controller="ClientesController">
+    <div class="container center-block">
+        <div class="jumbotron text-center">
+            <h1>Gerenciamento de Clientes</h1>
+        </div>
+
+        <div>
+            <h2>Cadastro</h2>
+            <hr/>
+        </div>
+
+        <!-- Form de cadastro -->
+        <div class="formcontainer">
+            <!--div class="alert alert-success" role="alert" ng-if="ctrl.successMessage">{{ctrl.successMessage}}</div>
+            <div class="alert alert-danger" role="alert" ng-if="ctrl.errorMessage">{{ctrl.errorMessage}}</div-->
+            <form ng-submit="adicionaCliente()" name="formCadastroCliente" class="form-horizontal">
+                <!--input type="hidden" ng-model="ctrl.user.id"/ -->
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-2 control-lable" for="nome">Nome</label>
+                        <div class="input-group col-md-6">
+                            <input type="text" ng-model="cliente.nome" id="nome" class="username form-control input-sm"
+                                   placeholder="Nome" required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-2 control-lable" for="limiteCredito">Limite Crédito</label>
+                        <div class="input-group col-md-6">
+                            <span class="input-group-addon">R$</span>
+                            <input type="text" ng-model="cliente.limiteCredito" id="limiteCredito" class="form-control input-sm" required somente-numeros/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-2 control-lable" for="risco">Risco</label>
+                        <div class="input-group col-md-6">
+                            <select ng-model="cliente.risco" id="risco" required>
+                                <option th:each="risco : ${T(com.gerenciador.clientes.model.Risco).values()}"
+                                        th:value="${risco}"
+                                        th:text="${risco}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-sm form-actions floatRight"  ng-disabled="formCadastroCliente.$invalid">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>Cadastrar
+                </button>
+
+            </form>
+        </div>
+
+        <div>
+            <h2>Clientes Cadastrados</h2>
+            <hr/>
+        </div>
+
+        <!-- Listagem -->
+        <div class="container">
+            <table class="table-striped table-hover col-lg-10 col-lg-offset-2">
+                <tr>
+                    <th>Nome</th>
+                    <th>Limite Crédito</th>
+                    <th>Risco</th>
+                    <th>Taxa</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="cliente in clientes">
+                    <td>{{cliente.nome}}</td>
+                    <td>{{cliente.limiteCredito | currency: "R$ " : 2}}</td>
+                    <td>{{cliente.risco}}</td>
+                    <td>{{cliente.taxa | porcentagem : 2}}</td>
+                    <td>
+                        <a class="button delete-button" ng-click="removeCliente(cliente.id)">
+                            <span class="alert-danger glyphicon glyphicon-remove"></span>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
